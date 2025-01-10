@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+jinja2
+sqlalchemy
+pytest
+flake8
+django
