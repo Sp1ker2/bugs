@@ -1,0 +1,45 @@
+name: FastAPI CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Проверка репозитория
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Установка Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+
+    # Установка зависимостей
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Линтинг кода
+    - name: Run flake8
+      run: |
+        source .venv/bin/activate
+        pip install flake8
+        flake8 app/
+
+    # Запуск тестов (если есть)
+    - name: Run tests
+      run: |
+        source .venv/bin/activate
+        pytest
